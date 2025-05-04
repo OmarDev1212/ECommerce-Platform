@@ -1,12 +1,15 @@
 
+using DomainLayer.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Contexts;
+using Persistence.Data.Seed;
+using System.Threading.Tasks;
 
 namespace ECommerce.Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -21,8 +24,15 @@ namespace ECommerce.Api
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("StoreConnection"));
             });
+            builder.Services.AddScoped<IDataSeeding, DataSeeding>();
 
             var app = builder.Build();
+
+            using var scope = app.Services.CreateScope();
+
+            var service = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
+
+            await service.SeedAsync();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

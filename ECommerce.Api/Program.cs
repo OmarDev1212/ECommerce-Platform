@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Persistence.Contexts;
 using Persistence.Data.Seed;
 using Persistence.Repositories;
+using Service;
 using Service.Profiles;
+using ServiceAbstractions;
 using System.Threading.Tasks;
 
 namespace ECommerce.Api
@@ -30,6 +32,7 @@ namespace ECommerce.Api
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddAutoMapper(typeof(ProductProfile).Assembly);
+            builder.Services.AddScoped<IServiceManager, ServiceManager>();
             var app = builder.Build();
 
             using var scope = app.Services.CreateScope();

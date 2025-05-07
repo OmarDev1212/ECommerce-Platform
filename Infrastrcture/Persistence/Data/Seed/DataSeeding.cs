@@ -28,7 +28,6 @@ namespace Persistence.Data.Seed
                 if (brandsData != null && brandsData.Count > 0)
                 {
                     await _dbContext.AddRangeAsync(brandsData);
-                    await _dbContext.SaveChangesAsync();
 
                 }
             }
@@ -46,7 +45,6 @@ namespace Persistence.Data.Seed
                 if (typesData != null && typesData.Count > 0)
                 {
                     await _dbContext.AddRangeAsync(typesData);
-                    await _dbContext.SaveChangesAsync();
 
                 }
 
@@ -64,12 +62,11 @@ namespace Persistence.Data.Seed
                 if (productsData != null && productsData.Count > 0)
                 {
                     await _dbContext.AddRangeAsync(productsData);
-                    await _dbContext.SaveChangesAsync();
 
                 }
 
             }
-
+            await _dbContext.SaveChangesAsync();
 
         }
     }

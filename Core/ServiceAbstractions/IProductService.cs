@@ -4,9 +4,9 @@ namespace ServiceAbstractions
 {
     public interface IProductService
     {
-        IEnumerable<ProductDto> GetAllProducts();
-        ProductDto GetProductById(int id);
-        IEnumerable<BrandDto> GetBrands();
-        IEnumerable<TypeDto> GetTypes();
+        Task<IEnumerable<ProductDto>> GetAllProducts();
+        Task<ProductDto> GetProductById(int id);
+        Task<IEnumerable<BrandDto>> GetBrands();
+        Task<IEnumerable<TypeDto>> GetTypes();
     }
 }

@@ -28,5 +28,18 @@ namespace Service.Specifications
         public List<Expression<Func<TEntity, object>>> IncludeExpressions { get; private set; } = [];
 
         protected void AddInclude(Expression<Func<TEntity, object>> IncludeExpression) => IncludeExpressions.Add(IncludeExpression);
+        public Expression<Func<TEntity, object>> OrderBy { get; private set; }
+
+        public Expression<Func<TEntity, object>> OrderByDescinding { get; private set; }
+
+        protected void AddOrderBy(Expression<Func<TEntity, object>> orderBy)
+        {
+            OrderBy = orderBy;
+        }
+        protected void AddOrderByDescinding(Expression<Func<TEntity, object>> orderByDesc)
+        {
+            OrderByDescinding = orderByDesc;
+        }
+
     }
 }

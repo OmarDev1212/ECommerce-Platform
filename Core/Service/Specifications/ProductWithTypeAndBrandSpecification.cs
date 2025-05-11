@@ -1,4 +1,5 @@
 ﻿using DomainLayer.Models.ProductModule;
+using Shared.DTO.ProductModule;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace Service.Specifications
 
         //we need to make filteration 
         //we can filter by ProductBrandId or ProductTypeId
-        public ProductWithTypeAndBrandSpecification(int? brandId, int? typeId) :
+        public ProductWithTypeAndBrandSpecification(int? brandId, int? typeId, ProductSortingOptions options) :
             base(p =>
 
                 ((!typeId.HasValue || p.ProductTypeId == typeId) &&
@@ -30,6 +31,24 @@ namespace Service.Specifications
         {
             AddInclude(p => p.ProductType);
             AddInclude(p => p.ProductBrand);
+            switch (options)
+            {
+                case ProductSortingOptions.NameAsc:
+                    AddOrderBy(p => p.Name);
+                    break;
+                case ProductSortingOptions.NameDesc:
+                    AddOrderByDescinding(p => p.Name);
+                    break;
+                case ProductSortingOptions.PriceAsc:
+                    AddOrderBy(p => p.Price);
+                    break;
+                case ProductSortingOptions.PriceDesc:
+                    AddOrderByDescinding(p=>p.Price);
+                    break;
+                default:
+                    AddOrderBy(p=>p.Name);
+                    break;
+            }
         }
     }
 }

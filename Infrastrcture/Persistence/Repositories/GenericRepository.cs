@@ -27,7 +27,6 @@ namespace Persistence.Repositories
             return await _dbContext.Set<TEntity>().ToListAsync();
         }
 
-
         public async Task<TEntity> GetById(Tkey id)
         {
             return await _dbContext.FindAsync<TEntity>(id);

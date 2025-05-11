@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceAbstractions;
+using Shared;
 using Shared.DTO.ProductModule;
 using System;
 using System.Collections.Generic;
@@ -16,10 +17,10 @@ namespace Presentation.Controllers
         [HttpGet]
         //if there is function that takes more than 3 parameters => take all of them in one class
 
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts([FromQuery] ProductQueryParameters queryParameters)
+        public async Task<ActionResult<PaginationResponse<ProductDto>>> GetProducts([FromQuery] ProductQueryParameters queryParameters)
         {
             var products = await _serviceManager.ProductService.GetAllProducts(queryParameters);
-            return Ok(products);
+            return Ok(new PaginationResponse<ProductDto>(queryParameters.PageIndex,queryParameters.PageSize,0,products));
         }
 
         [HttpGet("{id:int}")]

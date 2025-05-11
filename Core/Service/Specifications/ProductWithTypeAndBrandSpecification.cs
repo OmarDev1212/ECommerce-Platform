@@ -50,6 +50,7 @@ namespace Service.Specifications
                     AddOrderBy(p => p.Name);
                     break;
             }
+            ApplyPagination(queryParameters.PageSize, queryParameters.PageIndex);
         }
     }
 }

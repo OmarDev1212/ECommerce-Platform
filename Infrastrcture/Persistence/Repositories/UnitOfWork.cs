@@ -17,9 +17,9 @@ namespace Persistence.Repositories
         {
 
             var type = typeof(TEntity).Name;
-            if (_repositories.ContainsKey(type))
+            if (_repositories.TryGetValue(type, out object? value))
             {
-                return (IGenericRepository<TEntity, Key>)_repositories[type];
+                return (IGenericRepository<TEntity, Key>)value;
             }
             else
             {

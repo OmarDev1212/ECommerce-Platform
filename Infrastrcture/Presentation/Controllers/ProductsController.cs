@@ -14,9 +14,11 @@ namespace Presentation.Controllers
     public class ProductsController(IServiceManager _serviceManager) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts([FromQuery] int?brandId, [FromQuery] int? typeId, [FromQuery] ProductSortingOptions options)
+        //if there is function that takes more than 3 parameters => take all of them in one class
+
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts([FromQuery] ProductQueryParameters queryParameters)
         {
-            var products = await _serviceManager.ProductService.GetAllProducts(brandId,typeId,options);
+            var products = await _serviceManager.ProductService.GetAllProducts(queryParameters);
             return Ok(products);
         }
 

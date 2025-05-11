@@ -22,16 +22,17 @@ namespace Service.Specifications
 
         //we need to make filteration 
         //we can filter by ProductBrandId or ProductTypeId
-        public ProductWithTypeAndBrandSpecification(int? brandId, int? typeId, ProductSortingOptions options) :
+        public ProductWithTypeAndBrandSpecification(ProductQueryParameters queryParameters) :
             base(p =>
 
-                ((!typeId.HasValue || p.ProductTypeId == typeId) &&
-                (!brandId.HasValue || p.ProductBrandId == brandId)
+                ((!queryParameters.TypeId.HasValue || p.ProductTypeId == queryParameters.TypeId) &&
+                (!queryParameters.BrandId.HasValue || p.ProductBrandId == queryParameters.BrandId) &&
+                (string.IsNullOrEmpty(queryParameters.SearchValue) || p.Name.ToLower().Contains(queryParameters.SearchValue!.ToLower()))
             ))
         {
             AddInclude(p => p.ProductType);
             AddInclude(p => p.ProductBrand);
-            switch (options)
+            switch (queryParameters.SortingOptions)
             {
                 case ProductSortingOptions.NameAsc:
                     AddOrderBy(p => p.Name);
@@ -43,10 +44,10 @@ namespace Service.Specifications
                     AddOrderBy(p => p.Price);
                     break;
                 case ProductSortingOptions.PriceDesc:
-                    AddOrderByDescinding(p=>p.Price);
+                    AddOrderByDescinding(p => p.Price);
                     break;
                 default:
-                    AddOrderBy(p=>p.Name);
+                    AddOrderBy(p => p.Name);
                     break;
             }
         }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DomainLayer.Contracts;
 using DomainLayer.Models.ProductModule;
+using Service.Specifications;
 using ServiceAbstractions;
 using Shared.DTO.ProductModule;
 using System;
@@ -15,7 +16,8 @@ namespace Service
     {
         public async Task<IEnumerable<ProductDto>> GetAllProducts()
         {
-            var products = await _unitOfWork.GetRepository<Product, int>().GetAll();
+            var specification = new ProductWithTypeAndBrandSpecification();
+            var products = await _unitOfWork.GetRepository<Product, int>().GetAll(specification);
             return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products);
         }
 
@@ -27,7 +29,8 @@ namespace Service
 
         public async Task<ProductDto> GetProductById(int id)
         {
-            var product = await _unitOfWork.GetRepository<Product, int>().GetById(id);
+            var specification = new ProductWithTypeAndBrandSpecification(id);
+            var product = await _unitOfWork.GetRepository<Product, int>().GetById(specification);
             return _mapper.Map<Product, ProductDto>(product);
         }
 

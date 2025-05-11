@@ -26,18 +26,18 @@ namespace Presentation.Controllers
             if (id == 0) return BadRequest();
 
             var product = await _serviceManager.ProductService.GetProductById(id);
-          
+
             if (product is null) return NotFound();
             return Ok(product);
         }
 
-        [HttpGet("Brands")]
+        [HttpGet("brands")]
         public async Task<ActionResult<BrandDto>> GetBrands()
         {
             var brands = await _serviceManager.ProductService.GetBrands();
             return Ok(brands);
         }
-        [HttpGet("Types")]
+        [HttpGet("types")]
         public async Task<ActionResult<TypeDto>> GetTypes()
         {
             var types = await _serviceManager.ProductService.GetTypes();

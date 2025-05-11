@@ -19,7 +19,14 @@ namespace Service.Specifications
         //use this constructor to GetAll Products 
         //_dbContext.Products.Include(p=>p.ProductType).Include(p=>p.ProductBrand)
 
-        public ProductWithTypeAndBrandSpecification()
+        //we need to make filteration 
+        //we can filter by ProductBrandId or ProductTypeId
+        public ProductWithTypeAndBrandSpecification(int? brandId, int? typeId) :
+            base(p =>
+
+                ((!typeId.HasValue || p.ProductTypeId == typeId) &&
+                (!brandId.HasValue || p.ProductBrandId == brandId)
+            ))
         {
             AddInclude(p => p.ProductType);
             AddInclude(p => p.ProductBrand);

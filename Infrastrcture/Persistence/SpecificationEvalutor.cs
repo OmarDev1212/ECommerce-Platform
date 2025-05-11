@@ -23,6 +23,10 @@ namespace Persistence
             }
             if (specification.IncludeExpressions is not null)
             {
+                //foreach (var include in specification.IncludeExpressions)
+                //{
+                //    query = query.Include(include);
+                //}
                 query = specification.IncludeExpressions.Aggregate(query, (current, include) => current.Include(include));
                 //query=_dbcontext.Products.where(specification.Criteria).Include(p=>ProductBrand)
                 //query=_dbcontext.Products.where(specification.Criteria).Include(p=>ProductBrand).Include(p=>p.ProductType)

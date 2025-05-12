@@ -20,7 +20,7 @@ namespace Presentation.Controllers
         public async Task<ActionResult<PaginationResponse<ProductDto>>> GetProducts([FromQuery] ProductQueryParameters queryParameters)
         {
             var products = await _serviceManager.ProductService.GetAllProducts(queryParameters);
-            return Ok(new PaginationResponse<ProductDto>(queryParameters.PageIndex,queryParameters.PageSize,0,products));
+            return Ok(products);
         }
 
         [HttpGet("{id:int}")]

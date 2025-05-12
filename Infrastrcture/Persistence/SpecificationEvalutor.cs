@@ -38,9 +38,10 @@ namespace Persistence
                 query = query.OrderByDescending(specification.OrderByDescinding);//query=_dbcontext.Products.where(specification.Criteria).Include(p=>ProductBrand).Include(p=>p.ProductType).OrderByDescening(p=>p.Price)
 
             if (specification.IsPaginated)
-                query = query.Skip(specification.Skip).Take(specification.Take);
-            
-            return query;
+                query = query.Skip(specification.Skip).Take(specification.Take);//query=_dbcontext.Products.where(specification.Criteria).Include(p=>ProductBrand).Include(p=>p.ProductType).OrderByDescening(p=>p.Price).Skip(5).Take(10)
+
+
+            return query;//query=_dbcontext.Products.where(specification.Criteria).Include(p=>ProductBrand).Include(p=>p.ProductType).OrderByDescening(p=>p.Price).Skip(5).Take(10)
         }
     }
 

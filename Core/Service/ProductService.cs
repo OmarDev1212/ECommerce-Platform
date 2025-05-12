@@ -3,6 +3,7 @@ using DomainLayer.Contracts;
 using DomainLayer.Models.ProductModule;
 using Service.Specifications;
 using ServiceAbstractions;
+using Shared;
 using Shared.DTO.ProductModule;
 using System;
 using System.Collections.Generic;
@@ -14,11 +15,15 @@ namespace Service
 {
     public class ProductService(IUnitOfWork _unitOfWork, IMapper _mapper) : IProductService
     {
-        public async Task<IEnumerable<ProductDto>> GetAllProducts(ProductQueryParameters queryParameters)
+        public async Task<PaginationResponse<ProductDto>> GetAllProducts(ProductQueryParameters queryParameters)
         {
             var specification = new ProductWithTypeAndBrandSpecification(queryParameters);
-            var products = await _unitOfWork.GetRepository<Product, int>().GetAll(specification);
-            return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products);
+            var countSpecification = new ProductWithTypeAndBrandCount(queryParameters);
+            var repo = _unitOfWork.GetRepository<Product, int>();
+            var products = await repo.GetAll(specification);
+            var mappedProducts = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products);
+            var totalCount = await repo.CountAsync(countSpecification);
+            return new PaginationResponse<ProductDto>(queryParameters.PageIndex, queryParameters.PageSize,totalCount , mappedProducts);
         }
 
         public async Task<IEnumerable<BrandDto>> GetBrands()

@@ -45,10 +45,14 @@ namespace Persistence.Repositories
         {
             return await PerformQuery(specification).FirstOrDefaultAsync();
         }
+        public async Task<int> CountAsync(ISpecification<TEntity, Tkey> specification)
+        {
+            return await PerformQuery(specification).CountAsync();
+        }   
 
         private IQueryable<TEntity> PerformQuery(ISpecification<TEntity, Tkey> specification)
         {
-            return  SpecificationEvalutor<TEntity, Tkey>.GetQuery(_dbContext.Set<TEntity>(), specification);
+            return SpecificationEvalutor<TEntity, Tkey>.GetQuery(_dbContext.Set<TEntity>(), specification);
         }
 
     }

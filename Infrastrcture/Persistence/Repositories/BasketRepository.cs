@@ -15,7 +15,7 @@ namespace Persistence.Repositories
         private readonly IDatabase _db = connection.GetDatabase();
         public async Task<CustomerBasket?> CreateOrUpdateBasket(CustomerBasket customerBasket, TimeSpan? TimeToLive = null)
         {
-            var flag = await _db.StringSetAsync(customerBasket.Id, JsonSerializer.Serialize(customerBasket.Items), TimeToLive);
+            var flag = await _db.StringSetAsync(customerBasket.Id, JsonSerializer.Serialize(customerBasket), TimeToLive);
             return flag ? await GetCustomerBasket(customerBasket.Id) : null;
         }
 
@@ -26,7 +26,7 @@ namespace Persistence.Repositories
             var basket = await _db.StringGetAsync(id);
             if (basket.IsNull) return null;
             else
-                return JsonSerializer.Deserialize<CustomerBasket>(basket); // as it is key value pair 
+                return JsonSerializer.Deserialize<CustomerBasket?>(basket); // as it is key value pair 
         }
     }
 }

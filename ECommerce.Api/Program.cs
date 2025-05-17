@@ -1,6 +1,7 @@
 
 using DomainLayer.Contracts;
 using ECommerce.Api.Middlewares;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Contexts;
 using Persistence.Data.Seed;
@@ -8,6 +9,7 @@ using Persistence.Repositories;
 using Service;
 using Service.Profiles;
 using ServiceAbstractions;
+using Shared.Errors;
 using System.Threading.Tasks;
 
 namespace ECommerce.Api
@@ -34,6 +36,10 @@ namespace ECommerce.Api
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddAutoMapper(typeof(ProductProfile).Assembly);
             builder.Services.AddScoped<IServiceManager, ServiceManager>();
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                HandlingValidationErrors(options);
+            });
             var app = builder.Build();
 
             app.UseMiddleware<ExceptionMiddleware>();
@@ -59,6 +65,21 @@ namespace ECommerce.Api
             app.MapControllers();
 
             app.Run();
+        }
+
+        private static void HandlingValidationErrors(ApiBehaviorOptions options)
+        {
+            options.InvalidModelStateResponseFactory = (actionContext) =>
+            {
+                var errors = actionContext.ModelState.Where(e => e.Value.Errors.Count > 0)
+                                                    .SelectMany(p => p.Value.Errors)
+                                                    .Select(e => e.ErrorMessage);
+                var response = new ValidationErrorResponse()
+                {
+                    Errors = errors
+                };
+                return new BadRequestObjectResult(response);
+            };
         }
     }
 }

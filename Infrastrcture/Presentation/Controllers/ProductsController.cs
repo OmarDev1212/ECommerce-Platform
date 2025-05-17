@@ -26,11 +26,9 @@ namespace Presentation.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<ProductDto>> GetById(int id)
         {
-            if (id == 0) return BadRequest();
-
+          
             var product = await _serviceManager.ProductService.GetProductById(id);
 
-            if (product is null) return NotFound();
             return Ok(product);
         }
 

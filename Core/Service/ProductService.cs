@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using DomainLayer.Contracts;
+using DomainLayer.Exceptions;
 using DomainLayer.Models.ProductModule;
 using Service.Specifications;
 using ServiceAbstractions;
 using Shared;
 using Shared.DTO.ProductModule;
+using Shared.Errors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +25,7 @@ namespace Service
             var products = await repo.GetAll(specification);
             var mappedProducts = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products);
             var totalCount = await repo.CountAsync(countSpecification);
-            return new PaginationResponse<ProductDto>(queryParameters.PageIndex, queryParameters.PageSize,totalCount , mappedProducts);
+            return new PaginationResponse<ProductDto>(queryParameters.PageIndex, queryParameters.PageSize, totalCount, mappedProducts);
         }
 
         public async Task<IEnumerable<BrandDto>> GetBrands()
@@ -34,9 +36,10 @@ namespace Service
 
         public async Task<ProductDto> GetProductById(int id)
         {
+            if (id == 0) throw new ProductBadRequestException(id);
             var specification = new ProductWithTypeAndBrandSpecification(id);
             var product = await _unitOfWork.GetRepository<Product, int>().GetById(specification);
-            return _mapper.Map<Product, ProductDto>(product);
+            return product is null ? throw new ProductNotFoundException(id) : _mapper.Map<Product, ProductDto>(product);
         }
 
         public async Task<IEnumerable<TypeDto>> GetTypes()

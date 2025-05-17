@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Shared.Errors
 {
-    public record ApiExceptionResponse
+    public class ValidationErrorResponse:ApiErrorResponse
     {
-        public int StatusCode { get; init; }
-        public string ErrorMessage { get; init; }
+        public IEnumerable<string> Errors { get; set; }
     }
 }

@@ -22,6 +22,7 @@ namespace ECommerce.Api.Extensions
                 var connection = configuration.GetConnectionString("redis");
                 return ConnectionMultiplexer.Connect(connection!);
             });
+            services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped<IDataSeeding, DataSeeding>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();

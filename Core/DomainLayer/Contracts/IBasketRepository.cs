@@ -9,8 +9,8 @@ namespace DomainLayer.Contracts
 {
     public interface IBasketRepository
     {
-        Task<CustomerBasket> GetCustomerBasket(string id);
-        Task<CustomerBasket?> CreateOrUpdateBasket(CustomerBasket customerBasket);
+        Task<CustomerBasket?> GetCustomerBasket(string id);
+        Task<CustomerBasket?> CreateOrUpdateBasket(CustomerBasket customerBasket,TimeSpan? TimeToLive=null);
         Task<bool> DeleteBasket(string key);
     }
 }

@@ -1,0 +1,24 @@
+﻿using DomainLayer.Contracts;
+using Microsoft.EntityFrameworkCore;
+using Persistence.Contexts;
+using Persistence.Data.Seed;
+using Persistence.Repositories;
+
+namespace ECommerce.Api.Extensions
+{
+    public static class InfrastructureServiceRegistration
+    {
+        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+        {
+
+            services.AddDbContext<StoreDbContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("StoreConnection"));
+            });
+            services.AddScoped<IDataSeeding, DataSeeding>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            return services;
+        }
+    }
+}

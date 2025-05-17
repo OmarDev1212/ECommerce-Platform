@@ -1,5 +1,6 @@
 
 using DomainLayer.Contracts;
+using ECommerce.Api.Middlewares;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Contexts;
 using Persistence.Data.Seed;
@@ -35,11 +36,13 @@ namespace ECommerce.Api
             builder.Services.AddScoped<IServiceManager, ServiceManager>();
             var app = builder.Build();
 
+            app.UseMiddleware<ExceptionMiddleware>();
             using var scope = app.Services.CreateScope();
 
             var service = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
 
             await service.SeedAsync();
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

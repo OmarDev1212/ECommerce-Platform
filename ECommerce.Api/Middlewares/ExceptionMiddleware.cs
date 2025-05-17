@@ -45,7 +45,7 @@ namespace ECommerce.Api.Middlewares
 
         }
 
-        private async Task HandlingNotFoundEndPoint(HttpContext context)
+        private static async Task HandlingNotFoundEndPoint(HttpContext context)
         {
             if (context.Response.StatusCode == StatusCodes.Status404NotFound)
             {

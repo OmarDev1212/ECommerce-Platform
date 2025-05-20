@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServiceAbstractions;
 using Shared;
 using Shared.DTO.ProductModule;
@@ -15,6 +16,7 @@ namespace Presentation.Controllers
     public class ProductsController(IServiceManager _serviceManager) : ControllerBase
     {
         [HttpGet]
+        [Authorize]
         //if there is function that takes more than 3 parameters => take all of them in one class
 
         public async Task<ActionResult<PaginationResponse<ProductDto>>> GetProducts([FromQuery] ProductQueryParameters queryParameters)

@@ -88,7 +88,7 @@ namespace Service
                 audience: configuration["JWT:Audience"],
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(double.Parse(configuration["JWT:Expire"]!)),
-                signingCredentials: new SigningCredentials(authKey, SecurityAlgorithms.Aes128CbcHmacSha256)
+                signingCredentials: new SigningCredentials(authKey, SecurityAlgorithms.HmacSha256)
                 );
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

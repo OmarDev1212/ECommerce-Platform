@@ -16,6 +16,10 @@ namespace ECommerce.Api.Extensions
             {
                 options.UseSqlServer(configuration.GetConnectionString("StoreConnection"));
             });
+            services.AddDbContext<StoreIdentityDbContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("IdentityConnection"));
+            });
 
             services.AddSingleton<IConnectionMultiplexer>(options =>
             {

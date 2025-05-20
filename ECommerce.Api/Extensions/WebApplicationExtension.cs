@@ -13,7 +13,7 @@ namespace ECommerce.Api.Extensions
             var service = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
 
             await service.SeedAsync();
-
+            await service.SeedIdentityAsync();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

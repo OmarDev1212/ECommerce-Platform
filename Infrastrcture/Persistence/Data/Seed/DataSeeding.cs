@@ -1,12 +1,16 @@
 ﻿using DomainLayer.Contracts;
+using DomainLayer.Models.Identity;
 using DomainLayer.Models.ProductModule;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Contexts;
 using System.Text.Json;
 
 namespace Persistence.Data.Seed
 {
-    public class DataSeeding(StoreDbContext _dbContext) : IDataSeeding
+    public class DataSeeding(StoreDbContext _dbContext,
+                            UserManager<ApplicationUser> userManager,
+                            RoleManager<IdentityRole> roleManager) : IDataSeeding
     {
         public async Task SeedAsync()
         {
@@ -67,6 +71,37 @@ namespace Persistence.Data.Seed
 
             }
             await _dbContext.SaveChangesAsync();
+
+        }
+
+        public async Task SeedIdentityAsync()
+        {
+            if (!roleManager.Roles.Any())
+            {
+                await roleManager.CreateAsync(new IdentityRole("Admin"));
+                await roleManager.CreateAsync(new IdentityRole("SuperAdmin"));
+            }
+            if (!userManager.Users.Any())
+            {
+                var user01 = new ApplicationUser()
+                {
+                    Email = "Mohamed@gmail.com",
+                    PhoneNumber = "01234567890",
+                    DisplayName = "MohamedAhmed",
+                    UserName = "MohamedAhmed"
+                };
+                var user02 = new ApplicationUser()
+                {
+                    Email = "Salma@gmail.com",
+                    PhoneNumber = "01234567890",
+                    DisplayName = "SalmaAhmed",
+                    UserName = "SalmaAhmed"
+                };
+                await userManager.CreateAsync(user01, "P@ssW0rd");
+                await userManager.CreateAsync(user02, "P@ssW0rd");
+                await userManager.AddToRoleAsync(user01, "Admin");
+                await userManager.AddToRoleAsync(user02, "SuperAdmin");
+            }
 
         }
     }

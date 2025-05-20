@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DomainLayer.Exceptions
 {
-    public class BadRequestException(string message):Exception(message)
+    public class UnAuthorizedException(string message= "UnAuthorized"):Exception(message)
     {
     }
 }

@@ -25,7 +25,7 @@ namespace ECommerce.Api.Extensions
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
+            app.UseStaticFiles();
 
             app.MapControllers();
 

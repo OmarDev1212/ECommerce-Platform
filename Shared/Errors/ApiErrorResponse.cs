@@ -11,6 +11,7 @@ namespace Shared.Errors
 
         public int StatusCode { get; set; }
         public string? ErrorMessage { get; set; }
+        public IEnumerable<string>? Errors { get; set; }
         public ApiErrorResponse(int statusCode, string? message = null)
         {
             StatusCode = statusCode;

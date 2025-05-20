@@ -16,21 +16,25 @@ namespace ECommerce.Api.Middlewares
             }
             catch (Exception ex)
             {
-                //1.set status code
-                context.Response.StatusCode = ex switch
-                {
-                    NotFoundException => StatusCodes.Status404NotFound,
-                    BadRequestException => StatusCodes.Status400BadRequest,
-                    _ => StatusCodes.Status500InternalServerError,
-                };
-                //2. change response type from string to json
-                context.Response.ContentType = "application/json";
-                //3. create custom response object
+                //1. create custom response object
+
                 var response = new ApiErrorResponse()
                 {
                     StatusCode = context.Response.StatusCode,
                     ErrorMessage = ex.Message
                 };
+                //2.set status code
+                context.Response.StatusCode = ex switch
+                {
+                    NotFoundException => StatusCodes.Status404NotFound,
+                    BadRequestException => StatusCodes.Status400BadRequest,
+                    BadRequestWithErrorsException badRequestWithErrors => HandlingBadRequestWithErrors(response, badRequestWithErrors.Errors),
+                    UnAuthorizedException => StatusCodes.Status401Unauthorized,
+                    _ => StatusCodes.Status500InternalServerError,
+                };
+                //3. change response type from string to json
+                context.Response.ContentType = "application/json";
+
 
                 //4.return object as json
 
@@ -43,6 +47,12 @@ namespace ECommerce.Api.Middlewares
             }
 
 
+        }
+
+        private static int HandlingBadRequestWithErrors(ApiErrorResponse response, IEnumerable<string> errors)
+        {
+            response.Errors = errors;
+            return StatusCodes.Status400BadRequest;
         }
 
         private static async Task HandlingNotFoundEndPoint(HttpContext context)

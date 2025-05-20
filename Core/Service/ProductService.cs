@@ -36,7 +36,7 @@ namespace Service
 
         public async Task<ProductDto> GetProductById(int id)
         {
-            if (id == 0) throw new ProductBadRequestException(id);
+            if (id == 0) throw new ProductNotFoundException(id);
             var specification = new ProductWithTypeAndBrandSpecification(id);
             var product = await _unitOfWork.GetRepository<Product, int>().GetById(specification);
             return product is null ? throw new ProductNotFoundException(id) : _mapper.Map<Product, ProductDto>(product);

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace DomainLayer.Exceptions
 {
-    public sealed class ProductBadRequestException(int id ):BadRequestException($"There is bad request you made for Product with Id = {id}")
+    public class BadRequestWithErrorsException(IEnumerable<string> errors):Exception
     {
+        public IEnumerable<string> Errors { get; set; } = errors;
     }
 }

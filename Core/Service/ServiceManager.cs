@@ -2,6 +2,7 @@
 using DomainLayer.Contracts;
 using DomainLayer.Models.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using ServiceAbstractions;
 using System;
 using System.Collections.Generic;
@@ -14,11 +15,12 @@ namespace Service
     public class ServiceManager(IUnitOfWork _unitOfWork,
                                     IMapper _mapper,
                                     IBasketRepository _basketRepository,
-                                    UserManager<ApplicationUser> userManager) : IServiceManager
+                                    UserManager<ApplicationUser> userManager,
+                                    IConfiguration configuration) : IServiceManager
     {
         private readonly Lazy<IProductService> _productService = new Lazy<IProductService>(() => new ProductService(_unitOfWork, _mapper));
         private readonly Lazy<IBasketService> _basketService = new Lazy<IBasketService>(() => new BasketService(_basketRepository, _mapper));
-        private readonly Lazy<IAuthenticationService> _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(userManager));
+        private readonly Lazy<IAuthenticationService> _authenticationService = new Lazy<IAuthenticationService>(() => new AuthenticationService(userManager,configuration));
 
         public IProductService ProductService => _productService.Value;
 

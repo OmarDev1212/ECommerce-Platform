@@ -17,7 +17,7 @@ namespace ECommerce.Api
             //Infrastcture Registration
             builder.Services.AddInfrastructureServices(builder.Configuration);
             //Application services Registration
-            builder.Services.AddApplicationServices();
+            builder.Services.AddApplicationServices(builder.Configuration);
 
             var app = builder.Build();
 

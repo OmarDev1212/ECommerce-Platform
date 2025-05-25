@@ -141,7 +141,7 @@ namespace Persistence.Data.Migrations
 
                     b.HasIndex("ProductTypeId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.ProductModule.ProductBrand", b =>
@@ -158,7 +158,7 @@ namespace Persistence.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductBrands");
+                    b.ToTable("ProductBrands", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.ProductModule.ProductType", b =>
@@ -175,7 +175,7 @@ namespace Persistence.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductTypes");
+                    b.ToTable("ProductTypes", (string)null);
                 });
 
             modelBuilder.Entity("DomainLayer.Models.OrderAggregate.Order", b =>
@@ -186,7 +186,7 @@ namespace Persistence.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("DomainLayer.Models.OrderAggregate.ShippingAddress", "Address", b1 =>
+                    b.OwnsOne("DomainLayer.Models.OrderAggregate.Order.Address#DomainLayer.Models.OrderAggregate.ShippingAddress", "Address", b1 =>
                         {
                             b1.Property<Guid>("OrderId")
                                 .HasColumnType("uniqueidentifier");
@@ -213,7 +213,7 @@ namespace Persistence.Data.Migrations
 
                             b1.HasKey("OrderId");
 
-                            b1.ToTable("Orders");
+                            b1.ToTable("Orders", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderId");
@@ -231,7 +231,7 @@ namespace Persistence.Data.Migrations
                         .WithMany("Items")
                         .HasForeignKey("OrderId");
 
-                    b.OwnsOne("DomainLayer.Models.OrderAggregate.ProductItemOrdered", "Product", b1 =>
+                    b.OwnsOne("DomainLayer.Models.OrderAggregate.OrderItem.Product#DomainLayer.Models.OrderAggregate.ProductItemOrdered", "Product", b1 =>
                         {
                             b1.Property<int>("OrderItemId")
                                 .HasColumnType("int");
@@ -249,7 +249,7 @@ namespace Persistence.Data.Migrations
 
                             b1.HasKey("OrderItemId");
 
-                            b1.ToTable("OrderItems");
+                            b1.ToTable("OrderItems", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderItemId");

@@ -3,6 +3,7 @@ using DomainLayer.Contracts;
 using DomainLayer.Exceptions;
 using DomainLayer.Models.OrderAggregate;
 using DomainLayer.Models.ProductModule;
+using Service.Specifications;
 using ServiceAbstractions;
 using Shared.DTO.IdentityModule;
 using Shared.DTO.OrderModule;
@@ -71,6 +72,26 @@ namespace Service
             //    Id=order.Id.ToString()
             //};
             return mapper.Map<OrderDto>(order);
+        }
+
+
+        public async Task<DeliveryMethodDto> GetDeliveryMethods()
+        {
+            var methods = await unitOfWork.GetRepository<DeliveryMethod, int>().GetAll();
+            return mapper.Map<DeliveryMethodDto>(methods);
+        }
+        public async Task<IEnumerable<OrderDto>>  GetAllOrdersForCurrentUser(string email)
+        {
+            var spec = new OrdersByEmailSpecifcation(email);
+            var orders = await unitOfWork.GetRepository<Order, Guid>().GetAll(spec);
+            return mapper.Map<IEnumerable<OrderDto>>(orders);
+        }
+
+        public async Task<OrderDto> GetOrderByIdForCurrentUser(Guid id)
+        {
+            var spec = new OrderByIdSpecification(id);
+            var orders = await unitOfWork.GetRepository<Order, Guid>().GetById(spec);
+            return mapper.Map<OrderDto>(orders);
         }
     }
 }

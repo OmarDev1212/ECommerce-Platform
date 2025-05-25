@@ -12,16 +12,16 @@ namespace Service.Profiles
 {
     public class ProductProfile : Profile
     {
-        private readonly IConfiguration _configuration;
 
-        public ProductProfile(IConfiguration configuration)
+        public ProductProfile()
         {
-            _configuration = configuration;
             CreateMap<Product, ProductDto>()
                 .ForMember(dist => dist.BrandName, options => options.MapFrom(src => src.ProductBrand.Name))
                 .ForMember(dist => dist.TypeName, options => options.MapFrom(src => src.ProductType.Name))
+                //.ForMember(dest => dest.PictureUrl, opt =>
+                //    opt.MapFrom(src=>src.PictureUrl));
                 .ForMember(dest => dest.PictureUrl, opt =>
-                    opt.MapFrom(src => new Uri(new Uri(_configuration["ApiBaseUrl"]), src.PictureUrl).AbsoluteUri));
+                    opt.MapFrom<ProductPictureurlResolver>());
             CreateMap<ProductBrand, BrandDto>();
             CreateMap<ProductType, TypeDto>();
         }

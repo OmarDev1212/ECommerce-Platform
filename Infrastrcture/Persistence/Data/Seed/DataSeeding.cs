@@ -1,5 +1,6 @@
 ﻿using DomainLayer.Contracts;
 using DomainLayer.Models.Identity;
+using DomainLayer.Models.OrderAggregate;
 using DomainLayer.Models.ProductModule;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -66,6 +67,23 @@ namespace Persistence.Data.Seed
                 if (productsData != null && productsData.Count > 0)
                 {
                     await _dbContext.AddRangeAsync(productsData);
+
+                }
+
+            }
+
+            if (!_dbContext.Set<DeliveryMethod>().Any())
+            {
+                //1.ReadFiles
+                var deliveryMethods = File.ReadAllText(@"../Infrastrcture\Persistence\Data\Seed\JsonData\delivery.json");
+                //2.Converting json object to C# objects
+
+                var methods = JsonSerializer.Deserialize<List<DeliveryMethod>>(deliveryMethods);
+                //3.add data to database
+
+                if (methods != null && methods.Count > 0)
+                {
+                    await _dbContext.AddRangeAsync(methods);
 
                 }
 

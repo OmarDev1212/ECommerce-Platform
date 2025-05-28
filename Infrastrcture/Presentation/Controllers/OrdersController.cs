@@ -29,7 +29,7 @@ namespace Presentation.Controllers
             return Ok(await serviceManager.OrderService.GetDeliveryMethods());
         }
 
-        [HttpGet("AllOrdersForCuurentUser")]
+        [HttpGet]
         [Authorize]
         public async Task<ActionResult<OrderDto>> GetAllOrdersForCuurentUser()
         {

@@ -16,7 +16,7 @@ namespace Presentation.Controllers
     public class ProductsController(IServiceManager _serviceManager) : ControllerBase
     {
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         //if there is function that takes more than 3 parameters => take all of them in one class
 
         public async Task<ActionResult<PaginationResponse<ProductDto>>> GetProducts([FromQuery] ProductQueryParameters queryParameters)

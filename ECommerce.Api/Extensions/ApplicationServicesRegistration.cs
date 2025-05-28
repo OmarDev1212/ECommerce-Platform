@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Service;
 using Service.Profiles;
 using ServiceAbstractions;
@@ -14,12 +15,20 @@ namespace ECommerce.Api.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddAutoMapper(typeof(ProductProfile).Assembly);         
+            services.AddAutoMapper(typeof(ProductProfile).Assembly);
             services.AddScoped<IServiceManager, ServiceManager>();
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.ConfigureValidationErrorResponse();
             });
+            AddAuthenticationWithJwtService(services, configuration);
+            services.AddAuthorization();
+            services.AddSwaggerServices();
+            return services;
+        }
+
+        private static void AddAuthenticationWithJwtService(IServiceCollection services, IConfiguration configuration)
+        {
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -40,10 +49,37 @@ namespace ECommerce.Api.Extensions
 
                 };
             });
-            services.AddAuthorization();
-
-            return services;
         }
 
+        public static IServiceCollection AddSwaggerServices(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(options =>
+            {
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    In = ParameterLocation.Header,
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    Description = "Please Enter 'Bearer' Followed By Space then Your Token "
+                });
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+
+                        new OpenApiSecurityScheme()
+                        {
+                            Reference= new OpenApiReference()
+                            {
+                                Id="Bearer",
+                                Type= ReferenceType.SecurityScheme
+                            }
+                        },
+                        new string[]{}
+                    }
+                });
+            });
+            return services;
+        }
     }
 }

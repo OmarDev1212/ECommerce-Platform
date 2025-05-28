@@ -1,0 +1,18 @@
+@ECommerce.Api_HostAddress = https://localhost:7069
+
+GET {{ECommerce.Api_HostAddress}}/api/Products/10
+Accept: application/json
+
+###
+GET {{ECommerce.Api_HostAddress}}/api/Products?pageSize=10&brandId=1&typeId=1
+Accept: application/json
+###
+GET {{ECommerce.Api_HostAddress}}/api/Products/types
+Accept: application/json
+###
+GET {{ECommerce.Api_HostAddress}}/api/Products/brands
+Accept: application/json
+###
+
+
+

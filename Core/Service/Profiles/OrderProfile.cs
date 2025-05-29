@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using DomainLayer.Models.Identity;
 using DomainLayer.Models.OrderAggregate;
-using Microsoft.Extensions.Configuration;
 using Shared.DTO.IdentityModule;
 using Shared.DTO.OrderModule;
-using System.Runtime.CompilerServices;
 
 namespace Service.Profiles
 {
@@ -23,14 +21,21 @@ namespace Service.Profiles
 
                   .ForMember(dest => dest.PictureUrl, opt =>
                     opt.MapFrom<OrderItemDtoPictureUrlResolver>());
+
+
             CreateMap<Order, OrderDto>()
                 .ForMember(dest => dest.Status, options => options.MapFrom(src => src.Status.ToString()))
-                .ForMember(dest => dest.TotalPrice, options => options.MapFrom(src => src.GetTotal()))
+                .ForMember(dest => dest.Total, options => options.MapFrom(src => src.GetTotal()))
                 .ForMember(dest => dest.Items, options => options.MapFrom(src => src.Items))
                 .ForMember(dest => dest.Id, options => options.MapFrom(src => src.Id.ToString()))
-                .ForMember(dest=>dest.DeliveryMethod,options=>options.MapFrom(src=>src.DeliveryMethod.ShortName));
+                .ForMember(dest=>dest.DeliveryMethod,options=>options.MapFrom(src=>src.DeliveryMethod.ShortName))
+                .ForMember(dest=>dest.deliveryCost,options=>options.MapFrom(src=>src.DeliveryMethod.Price))
+                .ForMember(dest=>dest.buyerEmail,options=>options.MapFrom(src=>src.UserEmail))
+                .ForMember(dest=>dest.shipToAddress,options=>options.MapFrom(src=>src.Address))
+                ;
 
-            CreateMap<DeliveryMethod, DeliveryMethodDto>();
+            CreateMap<DeliveryMethod, DeliveryMethodDto>()
+                .ForMember(dest=>dest.Cost,options=>options.MapFrom(src=>src.Price));
         }
     }
 }

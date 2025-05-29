@@ -20,21 +20,23 @@ namespace Service
         public async Task<OrderDto> CreateOrderAsync(string email, CreateOrderDto createOrderDto)
         {
             //1. get  address
-            var mappedAddress = mapper.Map<AddressDto, ShippingAddress>(createOrderDto.ShippingAddress);
+            var mappedAddress = mapper.Map<AddressDto, ShippingAddress>(createOrderDto.shipToAddress);
             //2. get delivery method
             var deliveryMethod = await unitOfWork.GetRepository<DeliveryMethod, int>().GetById(createOrderDto.DeliveryMethodId) ?? throw new DeliveryMethodNotFoundException(createOrderDto.DeliveryMethodId);
             //3. get basket items
 
             var basket = await basketRepository.GetCustomerBasket(createOrderDto.BasketId) ?? throw new BasketNotFoundException(createOrderDto.BasketId);
-            //basket.Items
 
-            //basketItem
-            //  int id , name, picurl,
-            //  price,qunatity
-            //
-            //->OrderItem
-            // [product]int id name pictureurl
-            // price,quantity
+            ArgumentNullException.ThrowIfNull(basket.paymentIntentId);
+
+            var spec = new OrderByPaymentIntentId(basket.paymentIntentId);
+
+
+            var orderRepo = unitOfWork.GetRepository<Order, Guid>();
+
+            var ExisitingOrder = await orderRepo.GetById(spec);
+            if(ExisitingOrder is not null)
+                orderRepo.Delete(ExisitingOrder);
             List<OrderItem> orderItems = [];
             var productRepo = unitOfWork.GetRepository<Product, int>();
             foreach (var item in basket.Items)
@@ -44,16 +46,17 @@ namespace Service
                 {
                     Price = product.Price,
                     Quantity = item.Quantity,
-                    Product = new ProductItemOrdered { PictureUrl = product.PictureUrl, ProductId = product.Id, ProductName = product.Name }
+                    Product = new ProductItemOrdered { PictureUrl = product.PictureUrl, ProductId = product.Id.ToString(), ProductName = product.Name }
                 };
                 orderItems.Add(orderItem);
             }
             //4.subtotal
             var subTotal = orderItems.Sum(i => i.Price * i.Quantity);
+
             //5.create order
-            var order = new Order(email, mappedAddress, deliveryMethod, createOrderDto.DeliveryMethodId, orderItems, subTotal);
+            var order = new Order(email, mappedAddress, deliveryMethod, createOrderDto.DeliveryMethodId, orderItems, subTotal, basket.paymentIntentId);
             //6. save to database
-            await unitOfWork.GetRepository<Order, Guid>().AddAsync(order);
+            await orderRepo.AddAsync(order);
 
             var result = await unitOfWork.SaveChangesAsync();
             if (result <= 0)

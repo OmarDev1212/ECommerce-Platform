@@ -8,7 +8,7 @@ namespace DomainLayer.Models.OrderAggregate
 {
     public class Order : BaseEntity<Guid>
     {
-        public Order(string userEmail, ShippingAddress address, DeliveryMethod deliveryMethod, int deliveryMethodId, ICollection<OrderItem> items, decimal subTotal)
+        public Order(string userEmail, ShippingAddress address, DeliveryMethod deliveryMethod, int deliveryMethodId, ICollection<OrderItem> items, decimal subTotal, string paymentIntentId)
         {
             UserEmail = userEmail;
             Address = address;
@@ -16,6 +16,7 @@ namespace DomainLayer.Models.OrderAggregate
             DeliveryMethodId = deliveryMethodId;
             Items = items;
             SubTotal = subTotal;
+            PaymentIntentId = paymentIntentId;
         }
         public Order()
         {
@@ -30,5 +31,6 @@ namespace DomainLayer.Models.OrderAggregate
         public DateTimeOffset OrderDate { get; set; }= DateTimeOffset.Now;
         public OrderStatus Status { get; set; }=OrderStatus.Pending;
         public decimal GetTotal() => SubTotal + DeliveryMethod.Price;
+        public string PaymentIntentId { get; set; }
     }
 }

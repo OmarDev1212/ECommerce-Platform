@@ -38,8 +38,8 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("{id:Guid}")]
-        //[Authorize]
-        public async Task<ActionResult<OrderDto>> GetAllOrderForCuurentUser(Guid id)
+        [Authorize]
+        public async Task<ActionResult<OrderDto>> GetOrderByIdForCuurentUser(Guid id)
         {
             return Ok(await serviceManager.OrderService.GetOrderByIdForCurrentUser(id));
         }

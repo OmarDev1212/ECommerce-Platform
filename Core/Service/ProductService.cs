@@ -6,12 +6,6 @@ using Service.Specifications;
 using ServiceAbstractions;
 using Shared;
 using Shared.DTO.ProductModule;
-using Shared.Errors;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service
 {
@@ -25,7 +19,7 @@ namespace Service
             var products = await repo.GetAll(specification);
             var mappedProducts = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(products);
             var totalCount = await repo.CountAsync(countSpecification);
-            return new PaginationResponse<ProductDto>(queryParameters.PageIndex, queryParameters.PageSize, totalCount, mappedProducts);
+            return new PaginationResponse<ProductDto>(queryParameters.pageNumber, queryParameters.PageSize, totalCount, mappedProducts);
         }
 
         public async Task<IEnumerable<BrandDto>> GetBrands()

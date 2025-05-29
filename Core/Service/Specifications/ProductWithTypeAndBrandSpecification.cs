@@ -27,12 +27,12 @@ namespace Service.Specifications
 
                 ((!queryParameters.TypeId.HasValue || p.ProductTypeId == queryParameters.TypeId) &&
                 (!queryParameters.BrandId.HasValue || p.ProductBrandId == queryParameters.BrandId) &&
-                (string.IsNullOrEmpty(queryParameters.SearchValue) || p.Name.ToLower().Contains(queryParameters.SearchValue!.ToLower()))
+                (string.IsNullOrEmpty(queryParameters.search) || p.Name.ToLower().Contains(queryParameters.search!.ToLower()))
             ))
         {
             AddInclude(p => p.ProductType);
             AddInclude(p => p.ProductBrand);
-            switch (queryParameters.SortingOptions)
+            switch (queryParameters.sort)
             {
                 case ProductSortingOptions.NameAsc:
                     AddOrderBy(p => p.Name);
@@ -50,7 +50,7 @@ namespace Service.Specifications
                     AddOrderBy(p => p.Name);
                     break;
             }
-            ApplyPagination(queryParameters.PageSize, queryParameters.PageIndex);
+            ApplyPagination(queryParameters.PageSize, queryParameters.pageNumber);
         }
     }
 }

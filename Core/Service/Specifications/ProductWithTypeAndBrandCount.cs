@@ -14,7 +14,7 @@ namespace Service.Specifications
 
                 ((!queryParameters.TypeId.HasValue || p.ProductTypeId == queryParameters.TypeId) &&
                 (!queryParameters.BrandId.HasValue || p.ProductBrandId == queryParameters.BrandId) &&
-                (string.IsNullOrEmpty(queryParameters.SearchValue) || p.Name.ToLower().Contains(queryParameters.SearchValue!.ToLower()))
+                (string.IsNullOrEmpty(queryParameters.search) || p.Name.ToLower().Contains(queryParameters.search!.ToLower()))
             ))
         {
 

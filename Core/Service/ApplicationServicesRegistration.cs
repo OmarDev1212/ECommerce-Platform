@@ -20,6 +20,7 @@ namespace Service
             services.AddScoped<IBasketService, BasketService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IPaymentService, PaymentService>();
 
             services.AddScoped<Func<IProductService>>(provider =>
             () => provider.GetRequiredService<IProductService>());
@@ -32,6 +33,9 @@ namespace Service
 
             services.AddScoped<Func<IOrderService>>(provider =>
             () => provider.GetRequiredService<IOrderService>());
+
+            services.AddScoped<Func<IPaymentService>>(provider =>
+            () => provider.GetRequiredService<IPaymentService>());
 
 
 

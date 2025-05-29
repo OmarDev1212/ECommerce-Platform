@@ -1,29 +1,47 @@
-﻿using AutoMapper;
+﻿using DomainLayer.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using Service;
 using Service.Profiles;
 using ServiceAbstractions;
-using Shared.Errors;
 using System.Text;
 
-namespace ECommerce.Api.Extensions
+namespace Service
 {
     public static class ApplicationServicesRegistration
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAutoMapper(typeof(ProductProfile).Assembly);
-            services.AddScoped<IServiceManager, ServiceManager>();
+
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IBasketService, BasketService>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IOrderService, OrderService>();
+
+            services.AddScoped<Func<IProductService>>(provider =>
+            () => provider.GetRequiredService<IProductService>());
+
+            services.AddScoped<Func<IBasketService>>(provider =>
+            () => provider.GetRequiredService<IBasketService>());
+
+            services.AddScoped<Func<IAuthenticationService>>(provider =>
+            () => provider.GetRequiredService<IAuthenticationService>());
+
+            services.AddScoped<Func<IOrderService>>(provider =>
+            () => provider.GetRequiredService<IOrderService>());
+
+
+
+            services.AddScoped<IServiceManager, ServiceManagerWithFactoryDelegate>();
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.ConfigureValidationErrorResponse();
             });
             AddAuthenticationWithJwtService(services, configuration);
             services.AddAuthorization();
-            services.AddSwaggerServices();
             return services;
         }
 
@@ -51,35 +69,6 @@ namespace ECommerce.Api.Extensions
             });
         }
 
-        public static IServiceCollection AddSwaggerServices(this IServiceCollection services)
-        {
-            services.AddSwaggerGen(options =>
-            {
-                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-                {
-                    In = ParameterLocation.Header,
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer",
-                    Description = "Please Enter 'Bearer' Followed By Space then Your Token "
-                });
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement()
-                {
-                    {
 
-                        new OpenApiSecurityScheme()
-                        {
-                            Reference= new OpenApiReference()
-                            {
-                                Id="Bearer",
-                                Type= ReferenceType.SecurityScheme
-                            }
-                        },
-                        new string[]{}
-                    }
-                });
-            });
-            return services;
-        }
     }
 }

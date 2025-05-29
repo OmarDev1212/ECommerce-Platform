@@ -40,6 +40,7 @@ namespace ECommerce.Api.Extensions
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCors("All");
             app.UseAuthentication();
             app.UseAuthorization(); 
 

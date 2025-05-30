@@ -13,6 +13,7 @@ namespace Shared.DTO.IdentityModule
         public string Email { get; set; }
 
         public string DisplayName { get; set; }
+        public string userName { get; set; }
         public string Token { get; set; }
     }
 }

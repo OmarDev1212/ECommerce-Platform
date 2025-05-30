@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ECommerce.Api.Attributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceAbstractions;
 using Shared.DTO.OrderModule;
@@ -23,13 +24,14 @@ namespace Presentation.Controllers
             var email = User.FindFirstValue(ClaimTypes.Email);
             return Ok(await serviceManager.OrderService.CreateOrderAsync(email!, createOrderDto));
         }
+        [Cache]
         [HttpGet("DeliveryMethods")]
         public async Task<ActionResult<DeliveryMethodDto>> GetAllDeliveryMethods()
         {
             return Ok(await serviceManager.OrderService.GetDeliveryMethods());
         }
 
-        [HttpGet("AllOrdersForCuurentUser")]
+        [HttpGet]
         [Authorize]
         public async Task<ActionResult<OrderDto>> GetAllOrdersForCuurentUser()
         {
@@ -38,8 +40,8 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("{id:Guid}")]
-        //[Authorize]
-        public async Task<ActionResult<OrderDto>> GetAllOrderForCuurentUser(Guid id)
+        [Authorize]
+        public async Task<ActionResult<OrderDto>> GetOrderByIdForCuurentUser(Guid id)
         {
             return Ok(await serviceManager.OrderService.GetOrderByIdForCurrentUser(id));
         }

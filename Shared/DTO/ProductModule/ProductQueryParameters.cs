@@ -12,9 +12,9 @@ namespace Shared.DTO.ProductModule
         private const int MaximumSize = 10;
         public int? BrandId { get; set; }
         public int? TypeId { get; set; }
-        public ProductSortingOptions SortingOptions { get; set; }
-        public string? SearchValue { get; set; }
-        public int PageIndex { get; set; } = 1;
+        public ProductSortingOptions sort { get; set; }
+        public string? search { get; set; }
+        public int pageNumber { get; set; } = 1;
         private int _pageSize=DefaultSize;
 
         public int PageSize

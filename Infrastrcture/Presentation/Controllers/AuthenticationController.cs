@@ -13,7 +13,7 @@ namespace Presentation.Controllers
 {
     [ApiController]
     [Route("/api/[controller]")]
-    public class AccountController(IServiceManager serviceManager) : ControllerBase
+    public class AuthenticationController(IServiceManager serviceManager) : ControllerBase
     {
         [HttpPost("Register")]
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
@@ -25,12 +25,12 @@ namespace Presentation.Controllers
         {
             return Ok(await serviceManager.AuthenticationService.Login(loginDto));
         }
-        [HttpGet("IsEmailExisted")]
+        [HttpGet("emailexists")]
         public async Task<ActionResult<bool>> CheckUserEmailExist(string email)
         {
             return Ok(await serviceManager.AuthenticationService.CheckEmailExist(email));
         }
-        [HttpGet("CuurentUser")]
+        [HttpGet]
         [Authorize]
         public async Task<ActionResult<UserDto>> GetCuurentUser()
         {

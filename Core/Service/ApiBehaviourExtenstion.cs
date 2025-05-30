@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shared.Errors;
 
-namespace ECommerce.Api.Extensions
+namespace Service
 {
     public static class ApiBehaviourExtenstion
     {

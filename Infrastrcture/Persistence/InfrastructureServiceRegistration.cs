@@ -2,12 +2,14 @@
 using DomainLayer.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Persistence.Contexts;
 using Persistence.Data.Seed;
 using Persistence.Repositories;
 using StackExchange.Redis;
 
-namespace ECommerce.Api.Extensions
+namespace Persistence
 {
     public static class InfrastructureServiceRegistration
     {
@@ -28,6 +30,7 @@ namespace ECommerce.Api.Extensions
                 var connection = configuration.GetConnectionString("redis");
                 return ConnectionMultiplexer.Connect(connection!);
             });
+            services.AddScoped<ICachingRepository, CacheRepository>();
             services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped<IDataSeeding, DataSeeding>();
 

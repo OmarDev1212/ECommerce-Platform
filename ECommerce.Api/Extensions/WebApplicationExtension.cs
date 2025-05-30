@@ -1,5 +1,7 @@
 ﻿using DomainLayer.Contracts;
 using ECommerce.Api.Middlewares;
+using Swashbuckle.AspNetCore.SwaggerUI;
+using System.Text.Json;
 
 namespace ECommerce.Api.Extensions
 {
@@ -19,11 +21,26 @@ namespace ECommerce.Api.Extensions
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(options =>
+                {
+                    options.EnablePersistAuthorization();
+                    options.DocumentTitle = "E-Commerce.Api";
+                    options.EnableFilter();
+                    options.DocExpansion(DocExpansion.None);
+                    options.EnableValidator();
+                    options.DisplayRequestDuration();
+                    options.JsonSerializerOptions = new JsonSerializerOptions()
+                    {
+                        PropertyNamingPolicy= JsonNamingPolicy.CamelCase,
+
+                    };
+                    options.InjectStylesheet("\\swagger-ui\\SwaggerDark.css");
+                });
             }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCors("All");
             app.UseAuthentication();
             app.UseAuthorization(); 
 

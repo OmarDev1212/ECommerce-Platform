@@ -16,22 +16,27 @@ namespace ECommerce.Api.Middlewares
             }
             catch (Exception ex)
             {
-                //1. create custom response object
 
+                //1.set status code
+                context.Response.StatusCode = ex switch
+                {
+                    NotFoundException => StatusCodes.Status404NotFound,
+                    BadRequestException => StatusCodes.Status400BadRequest,
+                    BadRequestWithErrorsException => StatusCodes.Status400BadRequest,
+                    UnAuthorizedException => StatusCodes.Status401Unauthorized,
+                    _ => StatusCodes.Status500InternalServerError,
+                };
+                //2. create custom response object
                 var response = new ApiErrorResponse()
                 {
                     StatusCode = context.Response.StatusCode,
                     ErrorMessage = ex.Message
                 };
-                //2.set status code
-                context.Response.StatusCode = ex switch
+                // Handle special case for BadRequestWithErrorsException
+                if (ex is BadRequestWithErrorsException badRequestWithErrors)
                 {
-                    NotFoundException => StatusCodes.Status404NotFound,
-                    BadRequestException => StatusCodes.Status400BadRequest,
-                    BadRequestWithErrorsException badRequestWithErrors => HandlingBadRequestWithErrors(response, badRequestWithErrors.Errors),
-                    UnAuthorizedException => StatusCodes.Status401Unauthorized,
-                    _ => StatusCodes.Status500InternalServerError,
-                };
+                    response.Errors = badRequestWithErrors.Errors;
+                }
                 //3. change response type from string to json
                 context.Response.ContentType = "application/json";
 
@@ -45,15 +50,9 @@ namespace ECommerce.Api.Middlewares
 
                 await context.Response.WriteAsJsonAsync(response);
             }
-
-
         }
 
-        private static int HandlingBadRequestWithErrors(ApiErrorResponse response, IEnumerable<string> errors)
-        {
-            response.Errors = errors;
-            return StatusCodes.Status400BadRequest;
-        }
+
 
         private static async Task HandlingNotFoundEndPoint(HttpContext context)
         {

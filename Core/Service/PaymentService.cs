@@ -77,24 +77,25 @@ namespace Service
                     whSecret);
             var paymentIntent = stripeEvent.Data.Object as PaymentIntent;
 
-            if (stripeEvent.Type == EventTypes.PaymentIntentSucceeded)
+            switch (stripeEvent.Type)
             {
-                // Then define and call a method to handle the successful payment intent.
-                await UpdatePaymentIntentSucceded(paymentIntent.Id);
-            }
-            else if (stripeEvent.Type == EventTypes.PaymentIntentPaymentFailed)
-            {
-                var paymentMethod = stripeEvent.Data.Object as PaymentMethod;
+                case EventTypes.PaymentIntentSucceeded:
+                    // Then define and call a method to handle the successful payment intent.
+                    await UpdatePaymentIntentSucceded(paymentIntent.Id);
+                    break;
+                case EventTypes.PaymentIntentPaymentFailed:
+                    {
+                        var paymentMethod = stripeEvent.Data.Object as PaymentMethod;
 
-                await UpdatePaymentIntentFailed(paymentIntent.Id);
+                        await UpdatePaymentIntentFailed(paymentIntent.Id);
+                        break;
+                    }
 
-            }
-
-            // ... handle other event types
-            else
-            {
-                // Unexpected event type
-                Console.WriteLine("Unhandled event type: {0}", stripeEvent.Type);
+                // ... handle other event types
+                default:
+                    // Unexpected event type
+                    Console.WriteLine("Unhandled event type: {0}", stripeEvent.Type);
+                    break;
             }
         }
 

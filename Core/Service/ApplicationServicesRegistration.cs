@@ -45,6 +45,8 @@ namespace Service
                 options.ConfigureValidationErrorResponse();
             });
             AddAuthenticationWithJwtService(services, configuration);
+
+            services.AddScoped<ICachingService, CachingService>();
             services.AddAuthorization();
             return services;
         }

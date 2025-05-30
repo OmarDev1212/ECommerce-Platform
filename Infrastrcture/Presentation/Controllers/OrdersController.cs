@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ECommerce.Api.Attributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceAbstractions;
 using Shared.DTO.OrderModule;
@@ -23,6 +24,7 @@ namespace Presentation.Controllers
             var email = User.FindFirstValue(ClaimTypes.Email);
             return Ok(await serviceManager.OrderService.CreateOrderAsync(email!, createOrderDto));
         }
+        [Cache]
         [HttpGet("DeliveryMethods")]
         public async Task<ActionResult<DeliveryMethodDto>> GetAllDeliveryMethods()
         {

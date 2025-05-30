@@ -20,8 +20,9 @@ namespace Presentation.Controllers
         public async Task<ActionResult> WebHook()
         {
             var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
+            var stripeSignatureHeader = Request.Headers["Stripe-Signature"];
 
-            await serviceManager.paymentService.UpdateOrderStatus(json, Request.Headers["Stripe-Signature"]!);
+            await serviceManager.paymentService.UpdateOrderStatus(json, stripeSignatureHeader!);
             return new EmptyResult();
         }
 

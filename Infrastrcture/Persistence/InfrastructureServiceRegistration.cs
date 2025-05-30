@@ -30,6 +30,7 @@ namespace Persistence
                 var connection = configuration.GetConnectionString("redis");
                 return ConnectionMultiplexer.Connect(connection!);
             });
+            services.AddScoped<ICachingRepository, CacheRepository>();
             services.AddScoped<IBasketRepository, BasketRepository>();
             services.AddScoped<IDataSeeding, DataSeeding>();
 

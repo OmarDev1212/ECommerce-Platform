@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "Infrastrctu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Infrastrcture\Persistence\Persistence.csproj", "{A91A6732-4922-4C3F-8EA9-D3ECB69ECD9D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{5D5DB793-B517-46FA-84C7-50F011CBAF64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ecommerce.AdminDashboard", "UI\Ecommerce.AdmiDashboard\Ecommerce.AdminDashboard.csproj", "{5890D0A3-4E17-4291-B34E-A98A87ECADC2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +59,10 @@ Global
 		{A91A6732-4922-4C3F-8EA9-D3ECB69ECD9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A91A6732-4922-4C3F-8EA9-D3ECB69ECD9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A91A6732-4922-4C3F-8EA9-D3ECB69ECD9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5890D0A3-4E17-4291-B34E-A98A87ECADC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5890D0A3-4E17-4291-B34E-A98A87ECADC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5890D0A3-4E17-4291-B34E-A98A87ECADC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5890D0A3-4E17-4291-B34E-A98A87ECADC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +73,7 @@ Global
 		{D2811A9F-D6AE-4E89-ADC8-CA3EDDA79EB7} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{11D5F7EE-FD14-47E4-821A-FCCF94A4410A} = {81286AC9-B704-4F38-9129-3E43045F247D}
 		{A91A6732-4922-4C3F-8EA9-D3ECB69ECD9D} = {81286AC9-B704-4F38-9129-3E43045F247D}
+		{5890D0A3-4E17-4291-B34E-A98A87ECADC2} = {5D5DB793-B517-46FA-84C7-50F011CBAF64}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AB1CEA86-DD27-4A57-BFE9-9845469A1CE2}

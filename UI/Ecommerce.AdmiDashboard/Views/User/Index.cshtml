@@ -1,0 +1,57 @@
+﻿@model IEnumerable<UserViewModel>
+
+@{
+    ViewData["Title"] = "Users";
+    Layout = "_Layout";
+}
+@if (Model.Count() > 0)
+{
+
+}
+<h1>All Users</h1>
+<br />
+<br />
+@if (Model.Count() > 0)
+{
+    <table class="table table-hover table-dark table-striped-columns">
+        <thead>
+            <tr>
+                <td> @Html.DisplayNameFor(r => r.DisplayName)</td>
+                <td> @Html.DisplayNameFor(r => r.PhoneNumber)</td>
+                <td> @Html.DisplayNameFor(r => r.Email)</td>
+                <td> @Html.DisplayNameFor(r => r.Street)</td>
+                <td> @Html.DisplayNameFor(r => r.City)</td>
+                <td> @Html.DisplayNameFor(r => r.Country)</td>
+                <td> @Html.DisplayNameFor(r => r.Roles)</td>
+                <th>Update</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.DisplayName</td>
+                    <td>@user.PhoneNumber</td>
+                    <td>@user.Email</td>
+                    <td>@user.Street</td>
+                    <td>@user.City</td>
+                    <td>@user.Country</td>
+                    <td>@string.Join(',', @user.Roles)</td>
+                    <td>
+                        <a class="btn btn-success" asp-action="Edit" asp-route-id="@user.Id">
+                            <i class="fas fa-edit"></i> Edit
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+else
+{
+    <div class="alert alert-warning" role="alert">
+        No roles found.
+    </div>
+}

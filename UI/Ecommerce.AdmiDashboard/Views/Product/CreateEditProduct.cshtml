@@ -1,0 +1,38 @@
+﻿@model ProductViewModel
+@inject IUnitOfWork unitOfWork
+@{
+    var brands = new SelectList(await unitOfWork.GetRepository<ProductBrand, int>().GetAll(), dataValueField: "Id", dataTextField: "Name");
+    var types = new SelectList(await unitOfWork.GetRepository<ProductType, int>().GetAll(), dataValueField: "Id", dataTextField: "Name");
+}
+<div class="form-group mb-3 col-6">
+    <label class="form-label" asp-for="Name"></label>
+    <input asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+<div class="form-group mb-3 col-6">
+    <label class="form-label" asp-for="Image"></label>
+    <input asp-for="Image" class="form-control" />
+    <span asp-validation-for="Image" class="text-danger"></span>
+</div>
+<div class="form-group mb-3 col-6">
+    <label class="form-label" asp-for="Price"></label>
+    <input asp-for="Price" class="form-control" />
+    <span asp-validation-for="Price" class="text-danger"></span>
+</div>
+<div class="form-group mb-3 col-6">
+    <label class="form-label" asp-for="Description"></label>
+    <input asp-for="Description" class="form-control" />
+    <span asp-validation-for="Description" class="text-danger"></span>
+</div>
+<div class="form-group mb-3 col-6">
+    <label class="col-form-label" asp-for="ProductBrand"></label>
+    <select asp-for="ProductBrandId" asp-items="brands" class="form-control">
+        <option value="@null">--Select Product Brand--</option>
+    </select>
+</div>
+<div class="form-group mb-3 col-6">
+    <label class="col-form-label" asp-for="ProductType"></label>
+    <select asp-for="ProductTypeId" asp-items="types" class="form-control">
+        <option value="@null">--Select Product Type--</option>
+    </select>
+</div>

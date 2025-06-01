@@ -1,0 +1,40 @@
+﻿@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Brands";
+}
+@model IEnumerable<BrandDto>
+<h1>All Product Brands</h1>
+<br />
+<br />
+<a class="btn btn-primary flex-lg-row-reverse" asp-controller="Brand" asp-action="Create">Create Brand</a>
+
+
+@if (Model.Count() > 0)
+{
+
+    <table class="table table-hover table-dark table-striped-columns">
+        <thead>
+            <tr>
+                <td> @Html.DisplayNameFor(r => r.Name)</td>
+                <th>Update</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var Brand in Model)
+            {
+                <tr>
+                    <td>@Brand.Name</td>
+                    <partial name="buttons" model="Brand.Id.ToString()"></partial>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-warning" Brand="alert">
+        No Product Brands found.
+    </div>
+}

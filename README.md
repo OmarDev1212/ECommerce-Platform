@@ -1,4 +1,4 @@
-# ECommerce.Api
+# ECommerce Platform
 ECommerce.Api is an advanced, full-stack web application built to simulate the core functionalities of a food ordering platform. The project features an Admin Dashboard and RESTful APIs using ASP.NET Core, integrating modern technologies like Redis for caching, Stripe for payment handling, and advanced architectural patterns such as Onion Architecture, Repository Pattern, and Unit of Work.
 
 ## Features
